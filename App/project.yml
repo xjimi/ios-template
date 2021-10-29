@@ -1,19 +1,28 @@
-name: Template #FIXME
+name: NewApp #FIXME
 
 configs:
   Debug: debug
   Staging: release
   Release: release
+
 options:
-  bundleIdPrefix: com.xjimi.template #FIXME
+  # bundleIdPrefix: com.domain
   deploymentTarget:
     iOS: 13.0
+
+packages:
+  Networking:
+    url: https://github.com/freshOS/Networking
+    from: 0.3.4
+
 targets:
-  Application:
+  NewApp: #FIXME
     type: application
     platform: iOS
-    source:
-      -path: Application/
+    sources:
+      - path: Application
+    dependencies:
+      - package: Networking
     configFiles:
       Debug: Application/Configuration/Debug.xcconfig
       Staging: Application/Configuration/Staging.xcconfig
@@ -34,30 +43,61 @@ targets:
       - name: swiftlint
         script: |
                 if [[ -f ./Mintfile ]] ; then
-                  xcrun --sdk macosx mint run swiftlint autocorrect --format
-                  xcrun --sdk macosx mint run swiftlint
+                  mint run swiftlint
                 else
                   echo "error: Not exists Mintfile, Please run \"make mint\"."
                   exit 1
                 fi
-      - name: SwiftFormat
-        script: |
-                if [[ -f ./Mintfile ]] ; then
-                  xcrun --sdk macosx mint run nicklockwood/SwiftFormat swiftformat .
-                else
-                  echo "error: Not exists Mintfile, Please run \"make mint\"."
-                  exit 1
-                fi
+      # 為避免 undo history 被清除, 需要時再執行 mint run swiftformat . 
+      # - name: SwiftFormat
+      #   script: |
+      #           if [[ -f ./Mintfile ]] ; then
+      #             mint run swiftformat .
+      #           else
+      #             echo "error: Not exists Mintfile, Please run \"make mint\"."
+      #             exit 1
+      #           fi
     settings:
-      FRAMEWORK_SEARCH_PATHS: 
-        - $(inherited)
-      DEVELOPMENT_TEAM: SDDM52ZQBR  #FIXME
+      base:
+        # DEVELOPMENT_TEAM: SDDM52ZQBR  #FIXME
+        CODE_SIGN_STYLE: Manual
+        IPHONEOS_DEPLOYMENT_TARGET: 13.0
+        SWIFT_VERSION: 5.0
 
-Tests:
-  platform: iOS
-  type: bundle.unit-test
-  sources:
-    - Tests/
-  scheme:
-    testTargets:
-      - Tests
+        MARKETING_VERSION: 0.0.1
+        CURRENT_PROJECT_VERSION: 1
+        TARGETED_DEVICE_FAMILY: 1 # 1: iPhone, 2: iPad
+        PRODUCT_NAME: $(APP_NAME)
+        FRAMEWORK_SEARCH_PATHS: 
+        - $(inherited)
+
+      configs:
+        Debug:
+          CODE_SIGN_IDENTITY: Apple Development
+          # DISPLAY_NAME_SUFFIX: _dev
+          INFOPLIST_FILE: Application/Resources/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.domain.appName.dev
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+        Staging:
+          CODE_SIGN_IDENTITY: Apple Distribution
+          # DISPLAY_NAME_SUFFIX: _stg
+          INFOPLIST_FILE: Application/Resources/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.domain.appName.stg
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: STAGING
+        Release:
+          CODE_SIGN_IDENTITY: Apple Distribution
+          # DISPLAY_NAME_SUFFIX: 
+          INFOPLIST_FILE: Application/Resources/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.domain.appName
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: RELEASE
+
+    scheme:
+      testTargets:
+      - ApplicationTests
+      gatherCoverageData: false #不顯示在 scheme
+
+  ApplicationTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ApplicationTests

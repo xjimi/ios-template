@@ -10,26 +10,25 @@ import UIKit
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    var window: UIWindow?
-    
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let _ = (scene as? UIWindowScene) else { return }
+  var window: UIWindow?
 
-        window?.rootViewController = UIViewController()
-    }
+  func scene(_: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
 
-    func sceneDidDisconnect(_ scene: UIScene) {
-    }
+    window?.rootViewController = UIViewController()
+  }
 
-    func sceneDidBecomeActive(_ scene: UIScene) {
-    }
+  func sceneDidDisconnect(_: UIScene) {
+  }
 
-    func sceneWillResignActive(_ scene: UIScene) {
-    }
+  func sceneDidBecomeActive(_: UIScene) {
+  }
 
-    func sceneWillEnterForeground(_ scene: UIScene) {
-    }
+  func sceneWillResignActive(_: UIScene) {
+  }
 
-    func sceneDidEnterBackground(_ scene: UIScene) {
-    }
+  func sceneWillEnterForeground(_: UIScene) {
+  }
+
+  func sceneDidEnterBackground(_: UIScene) {
+  }
 }

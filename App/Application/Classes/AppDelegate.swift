@@ -10,27 +10,31 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+  var window: UIWindow?
 
-        if #available(iOS 13.0, *) {} else {
-            window = UIWindow(frame: UIScreen.main.bounds)
-            window?.rootViewController = UIViewController()
-            window?.makeKeyAndVisible()
-        }
+  func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        return true
+    if #available(iOS 13.0, *) {} else {
+      window = UIWindow(frame: UIScreen.main.bounds)
+      window?.rootViewController = UIViewController()
+      window?.makeKeyAndVisible()
     }
 
-    @available(iOS 13.0, *)
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
+    return true
+  }
 
-    @available(iOS 13.0, *)
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-    }
+  @available(iOS 13.0, *)
+  func application(
+    _: UIApplication,
+    configurationForConnecting connectingSceneSession: UISceneSession,
+    options _: UIScene.ConnectionOptions)
+    -> UISceneConfiguration
+  {
+    UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+  }
+
+  @available(iOS 13.0, *)
+  func application(_: UIApplication, didDiscardSceneSessions _: Set<UISceneSession>) {
+  }
 
 }
-
