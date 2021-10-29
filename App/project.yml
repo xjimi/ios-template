@@ -1,0 +1,63 @@
+name: Template #FIXME
+
+configs:
+  Debug: debug
+  Staging: release
+  Release: release
+options:
+  bundleIdPrefix: com.xjimi.template #FIXME
+  deploymentTarget:
+    iOS: 13.0
+targets:
+  Application:
+    type: application
+    platform: iOS
+    source:
+      -path: Application/
+    configFiles:
+      Debug: Application/Configuration/Debug.xcconfig
+      Staging: Application/Configuration/Staging.xcconfig
+      Release: Application/Configuration/Release.xcconfig
+    info:
+      path: Application/Resources/Info.plist
+      properties:
+        ITSAppUsesNonExemptEncryption: false
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UILaunchStoryboardName: LaunchScreen
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+          UISceneConfigurations:
+            UIWindowSceneSessionRoleApplication:
+              - UISceneConfigurationName: Default Configuration
+                UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
+    postBuildScripts:
+      - name: swiftlint
+        script: |
+                if [[ -f ./Mintfile ]] ; then
+                  xcrun --sdk macosx mint run swiftlint autocorrect --format
+                  xcrun --sdk macosx mint run swiftlint
+                else
+                  echo "error: Not exists Mintfile, Please run \"make mint\"."
+                  exit 1
+                fi
+      - name: SwiftFormat
+        script: |
+                if [[ -f ./Mintfile ]] ; then
+                  xcrun --sdk macosx mint run nicklockwood/SwiftFormat swiftformat .
+                else
+                  echo "error: Not exists Mintfile, Please run \"make mint\"."
+                  exit 1
+                fi
+    settings:
+      FRAMEWORK_SEARCH_PATHS: 
+        - $(inherited)
+      DEVELOPMENT_TEAM: SDDM52ZQBR  #FIXME
+
+Tests:
+  platform: iOS
+  type: bundle.unit-test
+  sources:
+    - Tests/
+  scheme:
+    testTargets:
+      - Tests

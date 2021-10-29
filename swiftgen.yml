@@ -1,0 +1,24 @@
+input_dir: App/Resources/SwiftGen/Source
+output_dir: App/Resources/SwiftGen/Generated/
+# strings:
+#   inputs: 
+#     - Localizable/en.lproj/Home.strings
+#   outputs:
+#     - templateName: structured-swift5
+#       output: Strings.swift
+xcassets:
+    # inputs:
+    #   - Assets/Colors.xcassets
+    # outputs:
+    #   - templateName: swift5
+    #     output: Colors.swift
+    #     params:
+    #       enumName: Colors
+    inputs:
+      - Assets/Base.xcassets
+    outputs:
+      - templateName: swift5
+        output: Images.swift
+        params:
+          enumName: Images
+
